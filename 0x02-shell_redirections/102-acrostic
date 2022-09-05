@@ -1,2 +1,2 @@
-#/bin/bash
-cut -c 1 | paste -s -d '' 
+#!/bin/bash
+cut -b 1|tr -d [[:space:]]|xargs echo
