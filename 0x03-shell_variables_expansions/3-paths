@@ -1,2 +1,2 @@
 #!/bin/bash
-env | grep '^PATH' | cut -d '=' -f 2 | tr ':' '\n' | wc -l
+echo $PATH | tr ':' '\n' | wc -l
