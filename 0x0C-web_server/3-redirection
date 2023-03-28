@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
+# Update Ubuntu
+apt-get -y update;
+
 # Install nginx and start it
-apt-get -y install nginx
+apt-get -y install nginx;
 
 # Firewall setting: Allow Nginx to serve on HTTP
 ufw allow 'Nginx HTTP'
