@@ -1,21 +1,12 @@
 #!/usr/bin/env bash
-# Update Ubuntu
-apt-get -y update;
+# This script configures the Nginx server so that
+# /redirect_me is redirecting to another page
 
-# Install nginx and start it
-apt-get -y install nginx;
+sudo apt-get -y update
+sudo apt-get -y install nginx
+sudo chown -R "$USER":"$USER" /var/www
+echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html
+sudo sed -i "48i\\\tif (\$request_filename ~ redirect_me){\n\t\t\
+rewrite ^ https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;\n\t}" /etc/nginx/sites-available/default
 
-# Firewall setting: Allow Nginx to serve on HTTP
-ufw allow 'Nginx HTTP'
-
-# Override the default index file served as home page
-echo "Hello World!" > /var/www/html/index.html
-
-#Give the user  ownership to website files
-sudo chown -R $USER:$USER /var/www/html
-sudo chmod -R 755 /var/www
-
-# Redirect to /redirect_me to a youtube video
-sed -i '37i\location /redirect_me { return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;}' /etc/nginx/sites-available/default
-
-service nginx restart
+sudo service nginx restart
