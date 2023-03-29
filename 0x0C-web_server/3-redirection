@@ -16,6 +16,6 @@ sudo chown -R $USER:$USER /var/www/html
 sudo chmod -R 755 /var/www
 
 # Redirect to /redirect_me to a youtube video
-sed -i '37i\location ~ /redirect_me { return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;}' /etc/nginx/sites-available/default
+sed -i '37i\location /redirect_me { return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;}' /etc/nginx/sites-available/default
 
-service nginx start
+service nginx restart
