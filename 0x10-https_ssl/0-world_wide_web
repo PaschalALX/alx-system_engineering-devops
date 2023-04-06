@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Audit domain and sub-domains
+
+if [ $# -eq 1 ];
+then
+    sub_domains=('www' 'lb-01' 'web-01' 'web-02')
+    for sub in "${sub_domains[@]}";
+    do
+    dig "$sub"."$1" | grep -A1 'ANSWER SECTION:' | awk -v SUB="$sub" '{if (NR==2) print ("The subdomain", SUB ,"is a", $4 ,"record and points to", $5)}'
+    done
+elif [ $# -eq 2 ];
+then
+    dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | awk -v SUB="$2" '{if (NR==2) print ("The subdomain", SUB ,"is a", $4 ,"record and points to", $5)}'
+fi
