@@ -19,6 +19,7 @@ global
 	#  https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
 	ssl-default-bind-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS
 	ssl-default-bind-options no-sslv3
+    ssl-dh-param-file /etc/haproxy/dhparams.pem
 
 defaults
 	log     global
@@ -40,15 +41,10 @@ defaults
 
 frontend www-http
 	 bind *:80
-	 reqadd X-Forwarded-Proto:\ http
-	 default_backend www-backend
-
-frontend www-https
-	 bind *:443 ssl crt /etc/haproxy/certs/www.pasmac.tech.pem
-	 reqadd X-Forwarded-Proto:\ https
-	 acl letsencrypt-acl path_beg /.well-known/acme-challenge/
-	 use_backend letsencrypt-backend if letsencrypt-acl
-	 default_backend www-backend
+     bind *:443 ssl crt /etc/ssl/www.pasmac.tech.pem
+     acl letsencrypt-acl path_beg /.well-known/acme-challenge
+     use_backend letsencrypt-backend if letsencrypt-acl
+     default_backend www-backend
 
 backend www-backend
 	redirect scheme https if !{ ssl_fc }
@@ -57,4 +53,4 @@ backend www-backend
 	server 2154-web-02 35.237.11.53:80 check
 
 backend letsencrypt-backend
-	server letsencrypt 127.0.0.1:54321
+	server certbot 127.0.0.1:54321
