@@ -26,6 +26,6 @@ if __name__ == '__main__':
     temp = 'Employee {} is done with tasks({}/{}):'
     text = temp.format(employee, cmpd_tasks_num, todos_num)
 
-    print(text) 
+    print(text)
     for task in cmpd_tasks:
         print('\t {}'.format(task.get('title')))
